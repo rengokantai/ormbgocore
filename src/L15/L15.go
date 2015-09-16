@@ -26,7 +26,12 @@ wordChannel :=make(chan string)
 
 go emit(wordChannel)
 
-for word := range wordChannel{
+//for word := range wordChannel{
+//fmt.Printf("%s", word)
+//}
+
+word:= <- wordChannel
 fmt.Printf("%s", word)
-}
+word2:= <- wordChannel
+fmt.Printf("%s", word2)
 }
