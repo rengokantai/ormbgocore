@@ -32,6 +32,12 @@ go emit(wordChannel)
 
 word:= <- wordChannel
 fmt.Printf("%s", word)
-word2:= <- wordChannel
-fmt.Printf("%s", word2)
+word2, ok:= <- wordChannel
+fmt.Printf("%s", word2, ok)
+word3, ok:= <- wordChannel
+fmt.Printf("%s", word3, ok)
+word4, ok:= <- wordChannel
+fmt.Printf("%s", word4, ok)
+word5, ok:= <- wordChannel
+fmt.Printf("%s", word5, ok)
 }
