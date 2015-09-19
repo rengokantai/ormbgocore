@@ -32,7 +32,9 @@ func main(){
 wch := make(chan string)
 doch:= make(chan bool)
 
-for i:=0,i <100; i++{
+go emit(wch, doch)
+
+for i:=0;i <100; i++ {
 fmt.Print("%s ", <-wch)
 }
 
