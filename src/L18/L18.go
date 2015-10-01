@@ -22,11 +22,12 @@ func getPage(url string)(int,error){
 }
 
 func main(){
-	url:="http://www.google.com/"
-
+	urls:=[]string{"http://www.google.com/","http://facebook.com","http://yidi.me"}
+	for _, url := range urls {
 	pageLength, err := getPage(url)
-	fmt.Printf("%d", pageLength)
+	fmt.Printf("%d\n", pageLength)
 	if err != nil{
 		os.Exit(1)
 	}
+}
 }
