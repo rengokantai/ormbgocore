@@ -3,7 +3,7 @@ package main
 import(
 	"fmt"
 	"net/http"
-	"os"
+	//"os"
 	"io/ioutil"
 )
 
@@ -21,13 +21,29 @@ func getPage(url string)(int,error){
 	return len(body),nil
 }
 
+
+func getter(url string, size chan int){
+	length,err :=getPage(url)
+	if err ==nil{
+		size<-length
+	}
+	
+}
+
 func main(){
 	urls:=[]string{"http://www.google.com/","http://facebook.com","http://yidi.me"}
+
+	size:=make(chan int)
 	for _, url := range urls {
-	pageLength, err := getPage(url)
-	fmt.Printf("%d\n", pageLength)
-	if err != nil{
-		os.Exit(1)
+		go getter(url, size)
+	// pageLength, err := getPage(url)
+	// fmt.Printf("%d\n", pageLength)
+	// if err != nil{
+	// 	os.Exit(1)
+	// }
+		}
+	for i:=0; i<len(urls);i++{
+		fmt.Printf("%d",<-size)
 	}
-}
+
 }
