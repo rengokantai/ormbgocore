@@ -5,20 +5,27 @@ import(
 	"time"
 )
 
-func printer(msg string, goCh chan bool){
-	<-goCh
+func printer(msg string, stopCh chan bool){
+	for{
+		select {
+			case <-stopCh:
+			return
+		default:
+				fmt.Printf("%s",msg)
+		}
+	}
 
-	fmt.Printf("%s",msg)
-}
+	}
 
 
 
 func main(){
-	goCh := make(chan bool)
+	//goCh := make(chan bool)
+	stopCh := make(chan bool)
 	for i := 0; i < 10; i++ {
-		go printer(fmt.Sprintf("printer %d",i), goCh)
+		go printer(fmt.Sprintf("printer %d",i), stopCh)
 	}
 	time.Sleep(5* time.Second)
-	close(goCh)
+	close(stopCh)
 	time.Sleep(5*time.Second)
 }
