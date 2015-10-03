@@ -41,6 +41,10 @@ func worker(urlCh chan string, sizeCh chan string){
 	}
 }
 }
+
+func generator(url string,urlCh chan string){
+	urlCh<-url
+}
 func main(){
 	
 
@@ -57,11 +61,12 @@ func main(){
 
 
 	for _, url :=range urls {
-		urlCh<-url
+		go generator(url,urlCh)
+		// or urlCh<-url
 	}
 
 	for i := 0; i < len(urls); i++ {
-		fmt.Printf("%s",<-sizeCh)
+		fmt.Printf("%s\n",<-sizeCh)
 	}
 
 
