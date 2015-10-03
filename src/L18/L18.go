@@ -22,18 +22,55 @@ func getPage(url string)(int,error){
 }
 
 
-func getter(url string, size chan string){
-	length,err :=getPage(url)
-	if err ==nil{
-		size<-fmt.Sprintf("%d\n",length)
-	}
+// func getter(url string, size chan string){
+// 	length,err :=getPage(url)
+// 	if err ==nil{
+// 		size<-fmt.Sprintf("%d\n",length)
+// 	}
 	
+// }
+func worker(urlCh chan string, sizeCh chan string){
+	for {
+		url:=<-urlCh
+		length,err:= getPage(url)
+	
+	if err==nil {
+		sizeCh <- fmt.Sprintf("%d",length)
+	}else{
+		sizeCh<-fmt.Sprintf("Error")
+	}
 }
-
+}
 func main(){
+	
+
+	urlCh :=make(chan string)
+	sizeCh :=make(chan string)
+
+
+
+	for i := 0; i < 10; i++ {
+			go worker(urlCh,sizeCh)
+	}
+
 	urls:=[]string{"http://www.google.com/","http://facebook.com","http://yidi.me"}
 
-	size:=make(chan string)
+
+	for _, url :=range urls {
+		urlCh<-url
+	}
+
+	for i := 0; i < len(urls); i++ {
+		fmt.Printf("%s",<-sizeCh)
+	}
+
+
+
+
+
+
+
+/*	size:=make(chan string)
 	for _, url := range urls {
 		go getter(url, size)
 	// pageLength, err := getPage(url)
@@ -45,5 +82,5 @@ func main(){
 	for i:=0; i<len(urls);i++{
 		fmt.Printf("%s",<-size)
 	}
-
+*/
 }
